@@ -1,0 +1,65 @@
+// Map and filters styling
+.map-container {
+  #map {
+    height: 572px;
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .filters {
+    box-shadow: 2px 0 5px rgba(0,0,0,.2);
+    z-index: 1;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      list-style: none;
+      padding: 10px 0;
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  h2 {
+    + ul {
+      margin: 20px 0 0;
+      > li {
+        border-top: 1px solid $brand-secondary;
+      }
+    }
+  }
+
+  .list-group-item {
+    border: none;
+    padding: 5px 0;
+    font-size: 14px;
+  }
+
+  .reset-filters {
+    font-weight: 700;
+    margin: 20px 0 0;
+
+    span {
+    //  background: url("../images/icons/reset.svg") center center no-repeat;
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      transition: ease all .3s;
+      margin-left: 10px;
+    }
+
+    &:hover {
+      span {
+      //  background-image: url("../images/icons/reset.svg");
+        transition: ease all .3s;
+      }
+    }
+  }
+}
