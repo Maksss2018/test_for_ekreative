@@ -1,0 +1,141 @@
+$z-index: 5;
+//@media
+$min : min-width;
+$max : max-width;
+
+/*
+$font-family-sans-serif:      'Roboto', sans-serif;
+$font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-base:            $font-family-sans-serif !default;
+$font-size-base:              1rem !default;
+*//*
+$h1-font-size:                $font-size-base * 1.75 !default;
+$h2-font-size:                $font-size-base * 1.25 !default;
+$h3-font-size:                $font-size-base * 1.25 !default;
+$h5-font-size:                $font-size-base !default;
+*/
+// stylelint-disable
+//$body-bg: #494a4b !default;//old
+$body-bg: #f5f7fa !default;//new
+
+$white:    #fff !default;
+
+$whiteBrt: #ffffff !default;
+$border-color: #e6e8ea !default;
+//#2d2d2d
+//#e6e8ea border color
+//#f5f7fa  bgrnd
+//#26bcad  btn fonts
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dadee2 !default;
+$gray-400: #ced4da !default;
+$gray-500: #b0b8c0 !default;
+$gray-600: #6f7880 !default;
+$gray-700: #3f3f3f !default;
+$gray-800: #353535 !default;
+
+
+
+
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+$grays: () !default;
+$grays: map-merge((
+        "100": $gray-100,
+        "200": $gray-200,
+        "300": $gray-300,
+        "400": $gray-400,
+        "500": $gray-500,
+        "600": $gray-600,
+        "700": $gray-700,
+        "800": $gray-800,
+        "900": $gray-900
+), $grays);
+
+
+//#26bcad  btn fonts
+$brand-primary:  #26bcad !default;
+
+//$brand-primary:   #ebbe55 !default;
+$brand-secondary: $brand-primary !default;
+//#0a4453
+$active-gray:#6e695f !default;
+$not-active-gray: #af9f9f !default;
+$dark-blue: #0a4453 !default;
+$brt-blue: #e1faf8 !default;
+$aqua-blue: #20bcad !default;
+$soft-green: #31cc54 !default;
+
+$blue:    #007bff !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$red:     #dc3545 !default;
+$orange:  #fd7e14 !default;
+$yellow:  #ffc107 !default;
+$green:   #28a745 !default;
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default;
+
+$colors: () !default;
+$colors: map-merge((
+        "brand-primary":    $brand-primary,
+        "brand-secondary":    $brand-secondary,
+        "blue":       $blue,
+        "indigo":     $indigo,
+        "purple":     $purple,
+        "pink":       $pink,
+        "red":        $red,
+        "orange":     $orange,
+        "yellow":     $yellow,
+        "green":      $green,
+        "teal":       $teal,
+        "cyan":       $cyan,
+        "white":      $white,
+        "gray":       $gray-600,
+        "gray-dark":  $gray-800
+), $colors);
+
+$primary:       $brand-primary !default;
+$secondary:     $brand-secondary !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $white !default;
+$dark:          $gray-800 !default;
+
+$theme-colors: () !default;
+
+$text-color: #404040 !default;
+
+$theme-colors: map-merge((
+        "primary":    $primary,
+        "secondary":  $secondary,
+        "success":    $success,
+        "info":       $info,
+        "warning":    $warning,
+        "danger":     $danger,
+        "light":      $light,
+        "dark":       $dark
+), $theme-colors);
+
+$dropdown-border-radius:            0 !default;
+$link-color: $brand-secondary !default;
+$nav-link-padding-y: 1rem !default;
+$nav-link-padding-x: 1rem !default;
+$navbar-brand-padding-y: .5rem;
+
+$table-dark-border-color:     #ebebeb !default;
+
+$border-radius:      0 !default;
+$custom-select-border-radius:       $border-radius !default;
+$btn-border-width:            2px !default;
+$btn-border-radius-lg: 0 !default;
+$alert-padding-y:                   .5rem !default;
+$alert-border-radius:               0 !default;
+$font-icon-url:             '../fonts/';
+$dashboard-border-color: #737779;
+$input-color: $white !default;
