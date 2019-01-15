@@ -1,0 +1,26 @@
+@import "./_variables.scss";
+
+#loginForm{
+  label{
+    font-weight: bold;
+     margin: 0.05rem 0.5rem;
+  }
+   .form{
+     &-custom{
+       &-container{
+         border: 30px solid transparent;
+         outline: 2px solid $gray-500;
+       }
+     }
+   }
+  .btn{
+    &-custom{
+      &-md{
+        padding: 5px;
+        &-rounded{
+          border-radius: 5px!important;
+        }
+      }
+    }
+  }
+}

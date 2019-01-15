@@ -1,25 +1,35 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Container, Row, Col, Form,
+import {FormFeedback, Row, Col, Form,
     FormGroup, Label, Input, Button } from 'reactstrap'
 import {logingIn} from '../../actions'
+import h5 from "eslint-plugin-jsx-a11y/src/util/implicitRoles/h5";
 class Login extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            login: null,
-            password: null,
+            auth:{loading: false, error: false, auth: false},
+            login:{
+                value:null,
+                valid:true
+            },
+            password:{
+                value:null,
+                valid:true
+            }
         };
+        this.validate = this.validate.bind(this);
+        this.handelInputOnChange = this.handelInputOnChange.bind(this);
     }
     /*TODO:
      * - chack  for local sotreg pass login
      * if  true redirect to /logged else return /
-     *
+     * https://alligator.io/react/fancy-forms-reactstrap/
      * */
     componentDidMount () {
-        if (this.props.auth) {
+        /*if (this.props.auth) {
             this.props.history.push('/logged')
-        }
+        }*/
         // if (!localStorage.getItem('Token')) { this.props.history.push('/') }
     }
 
@@ -38,55 +48,103 @@ class Login extends React.Component {
     // //       }
     // //     })
     // // }
-
+      handelInputOnChange(e){
+         e.preventDefault();
+         let trg = e.target, name = trg.name, value = trg.value,
+         valid = this.validate({name,value});
+         this.setState({[name]:{ value, valid}})
+      }
+    validate(data){
+        let {value, name }= data, rez;
+        switch(name){
+            case "login":
+                const emailRex = /([a-zA-Z\-0-9])$/;
+                rez = emailRex.test(value) && value.length <= 12;
+                break;
+            case "password":
+                rez = value.length <= 6 ? false : true;
+                break;
+            default: rez = null;
+        }
+        return rez;
+    }
     componentDidUpdate (prevProps, prevState, snapshot) {
-        if (!this.props.auth) {
+        /*if (!this.props.auth) {
             this.props.history.push('/')
         } else {
             this.props.history.push('/logged')
+        }*/
+        if(prevProps.auth!==this.props.auth){
+            let {auth} = this.props;
+            this.setState({auth});
         }
     }
 
 
 
     render () {
-        return (<Container>
-            <Row>
-                <Col>
-                    <Form className="form">
+        let {login,password, auth} = this.state,
+            {error,loading}=auth;
+        console.log(error+" "+loading);
+        return (<Col id={'loginForm'} className={` h-100 `} >
+            <Row className={` h-100 d-flex align-items-center `} >
+                <Col/>
+                <Col  xs={12} md={8}>
+                    <Form
+                        onSubmit={(e)=>{
+                            e.preventDefault();
+                           this.props.logingIn("test","test");
+                        }}
+                        className="form form-custom-container">
                         <Col>
                             <FormGroup>
-                                <Label>Email</Label>
+                                <Label>Login</Label>
                                 <Input
-                                    type="email"
-                                    name="email"
-                                    id="exampleEmail"
-                                    placeholder="myemail@email.com"
+                                    className={`text-dark`}
+                                    onChange={this.handelInputOnChange }
+                                    type="text"
+                                    name="login"
+                                    id="loginInput"
+                                    placeholder="login"
                                 />
-                            </FormGroup>
-                        </Col>
+                                { login.valid?"":<span className={"h6 text-danger "}  >
+                                    login name  not correct (try to use less  then 12 symbols or not  to use special symbols )
+                                </span>}
+                                </FormGroup>
+                            </Col>
                         <Col>
                             <FormGroup>
                                 <Label for="examplePassword">Password</Label>
                                 <Input
+                                    className={`text-dark`}
+                                    onChange={this.handelInputOnChange }
                                     type="password"
                                     name="password"
-                                    id="examplePassword"
+                                    id="inputPassword"
                                     placeholder="********"
                                 />
+                                { password.valid?"":<span className={" h6 text-danger "}>
+                                    password  not correct (try to use less  then 6 symbols)
+                                </span>}
                             </FormGroup>
                         </Col>
-                        <Button>Submit</Button>
+                        <Col className={`h-100 d-flex  justify-content-center content- align-items-center `}>
+                            <Button
+                            className={` btn-${loading?"warning":error?"danger":"info"} btn-custom-md-rounded `}
+                            > {loading?"loading ...":"Enter"} </Button>
+                            {`loading == ${loading}`}
+                        </Col>
                     </Form>
                 </Col>
-            </Row>
-        </Container>)
+                <Col/>
+                </Row>
+        </Col>)
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        auth: state.auth
+        auth: Object.assign({}, state.auth)
     }
 }
 const mapDispatchToProps = (dispatch) => ({

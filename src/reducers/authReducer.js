@@ -2,12 +2,17 @@
 /*TODO:
 * new functions for store
 * */
-export default (state = false/* = getCookie('Token')*/, action) => {
+import {
+  REQ_SEND_ENTER, REQ_GET_ENTER, REQ_ERROR_ENTER
+} from '../constants/index.js'
+export default (state = {loading: false, error: false, auth: false}/* = getCookie('Token')*/, action) => {
   switch (action.type) {
-    case 'LOGIN':
+    case REQ_SEND_ENTER:
       return (action.payload);
-    case 'LOGOUT':
-      return '';
+    case REQ_GET_ENTER:
+      return (action.payload);
+    case  REQ_ERROR_ENTER:
+      return (action.payload);
     default:
       return state
   }
