@@ -40,7 +40,7 @@ export const logingIn = (opt) => {
             ]
         }
     };
-        if(Users[opt.login][opt.password]!==undefined){
+        if(Users[opt.login]!==undefined&&Users[opt.login][opt.password]!==undefined){
             dispatch({
                 type: REQ_SEND_ENTER,
                 payload: {loading: true, error: false, auth: false}

@@ -8,6 +8,7 @@ class Login extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
+            globalError:false,
             auth:{loading: false, error: false, auth: false},
             login:{
                 value:null,
@@ -59,10 +60,10 @@ class Login extends React.Component {
         switch(name){
             case "login":
                 const emailRex = /([a-zA-Z\-0-9])$/;
-                rez = emailRex.test(value) && value.length <= 12;
+                rez = emailRex.test(value) && 12 >= value.length!==0&&  value.length <= 12 ;
                 break;
             case "password":
-                rez = value.length <= 6 ? false : true;
+                rez =  value.length <= 8 &&value.length !==0 ;
                 break;
             default: rez = null;
         }
@@ -77,13 +78,19 @@ class Login extends React.Component {
         if(prevProps.auth!==this.props.auth){
             let {auth} = this.props;
             this.setState({auth});
+            if (auth.error&&!auth.auth&&!auth.loading) {
+             //   this.props.history.push('/');
+                this.setState({globalError:true});
+            } else {
+                this.props.history.push('/logged')
+            }
         }
     }
 
 
 
     render () {
-        let {login,password, auth} = this.state,
+        let {login,password, auth,globalError} = this.state,
             {error,loading}=auth;
         console.log(error+" "+loading);
         return (<Col id={'loginForm'} className={` h-100 `} >
@@ -93,7 +100,9 @@ class Login extends React.Component {
                     <Form
                         onSubmit={(e)=>{
                             e.preventDefault();
-                           this.props.logingIn({login:login.value,password:password.value.toString()});
+                            login.valid&&password.valid?this.props.logingIn({login:login.value,password:password.value.toString()})
+                                :console.log(" unvalid form");
+
                         }}
                         className="form form-custom-container">
                         <Col>
@@ -128,9 +137,20 @@ class Login extends React.Component {
                                 </span>}
                             </FormGroup>
                         </Col>
+
+                        <Col className={`h5 py-3 h-100 d-flex  justify-content-center content- align-items-center `}>
+                            <small className={` text-${!globalError?"dark":"danger"} `}>
+                                {!globalError?"Please enter user name and password":
+                                    " Try to use other password or  user name else sign-in"}
+                            </small>
+                        </Col>
+
                         <Col className={`h-100 d-flex  justify-content-center content- align-items-center `}>
+                            {!globalError?"":<Button
+                                className={`mx-auto mx-md-3 btn-warning btn-custom-md-rounded `}
+                            > Sign-in </Button>}
                             <Button
-                            className={` btn-${loading?"warning":error?"danger":"info"} btn-custom-md-rounded `}
+                            className={`mx-auto mx-md-3 btn-${loading?"warning":error?"danger":"info"} btn-custom-md-rounded `}
                             > {loading?"loading ...":"Enter"} </Button>
                         </Col>
                     </Form>
