@@ -1,6 +1,7 @@
 import request from 'request'
 //import request from 'request-promise'
 //import {setCookie, getCookie} from '../utility/cookie'
+import {reactLocalStorage} from 'reactjs-localstorage';
 import {API,Users} from './config.json'
 import {
   REQ_SEND_ENTER, REQ_GET_ENTER, REQ_ERROR_ENTER
@@ -25,21 +26,7 @@ export const logingIn = (opt) => {
 //https://easyredmine.docs.apiary.io/#reference/issues/issues-collection/list-all-issues
 
     return async (dispatch) => {
-        let parameters = ["?sort=true","offset=0","limit=25","page=1"].join("&"),
-            options = {
-            url:"https://redmine.ekreative.com",// `${API}`,
-            method: 'POST',
-            multipart: {
-            chunked: false,
-                data: [
-                {
-                    'content-type': 'application/json',
-                    body:{ "username" : opt.login,
-                        "password" : opt.password}
-                }
-            ]
-        }
-    };
+        let parameters = ["?sort=true","offset=0","limit=25","page=1"].join("&");
         if(Users[opt.login]!==undefined&&Users[opt.login][opt.password]!==undefined){
             dispatch({
                 type: REQ_SEND_ENTER,
@@ -47,9 +34,11 @@ export const logingIn = (opt) => {
             });
             try{
                 let rez= await  doRequest(opt,parameters,"projects");
+                reactLocalStorage.set('key', true);
+                reactLocalStorage.setObject('key', Users[opt.login][opt.password]);
                 dispatch({
                     type: REQ_GET_ENTER,
-                    payload: {loading: false, error: false, auth: true, data:rez}
+                    payload: {loading: false, error: false, auth: true}
                 });
             }catch(e){
                 console.log("ERROR!!!!!!");

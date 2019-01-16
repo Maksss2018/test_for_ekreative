@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {FormFeedback, Row, Col, Form,
     FormGroup, Label, Input, Button } from 'reactstrap'
 import {logingIn} from '../../actions'
+import cookie from 'react-cookies'
 import h5 from "eslint-plugin-jsx-a11y/src/util/implicitRoles/h5";
 class Login extends React.Component {
     constructor (props) {
@@ -22,15 +23,10 @@ class Login extends React.Component {
         this.validate = this.validate.bind(this);
         this.handelInputOnChange = this.handelInputOnChange.bind(this);
     }
-    /*TODO:
-     * - chack  for local sotreg pass login
-     * if  true redirect to /logged else return /
-     * https://alligator.io/react/fancy-forms-reactstrap/
-     * */
     componentDidMount () {
-        /*if (this.props.auth) {
+        if (cookie.load("password")&&cookie.load("username")) {
             this.props.history.push('/logged')
-        }*/
+        }
         // if (!localStorage.getItem('Token')) { this.props.history.push('/') }
     }
 
@@ -76,13 +72,17 @@ class Login extends React.Component {
             this.props.history.push('/logged')
         }*/
         if(prevProps.auth!==this.props.auth){
-            let {auth} = this.props;
+            let {auth} = this.props,
+                {login,password}= this.state;
             this.setState({auth});
             if (auth.error&&!auth.auth&&!auth.loading) {
              //   this.props.history.push('/');
                 this.setState({globalError:true});
             } else {
-                this.props.history.push('/logged')
+                cookie.save('password', password.value);
+                cookie.save('username', login.value);
+                this.props.history.push('/logged');
+                console.log(" this.props.history "+JSON.stringify(this.props.history));
             }
         }
     }
