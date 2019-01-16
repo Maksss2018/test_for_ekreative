@@ -1,3 +1,6 @@
 {
-  "API":"https://redmine.ekreative.com/issues.json?sort=true&offset=0&limit=25"
+  "API":"https://redmine.ekreative.com",
+  "Users":{
+    "test":{"testtask":"2fda745bb4cdd835fdf41ec1fab82a13ddc1a54c"}
+  }
 }

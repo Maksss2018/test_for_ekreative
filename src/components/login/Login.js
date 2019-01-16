@@ -93,7 +93,7 @@ class Login extends React.Component {
                     <Form
                         onSubmit={(e)=>{
                             e.preventDefault();
-                           this.props.logingIn("test","test");
+                           this.props.logingIn({login:login.value,password:password.value.toString()});
                         }}
                         className="form form-custom-container">
                         <Col>
@@ -132,7 +132,6 @@ class Login extends React.Component {
                             <Button
                             className={` btn-${loading?"warning":error?"danger":"info"} btn-custom-md-rounded `}
                             > {loading?"loading ...":"Enter"} </Button>
-                            {`loading == ${loading}`}
                         </Col>
                     </Form>
                 </Col>
@@ -148,6 +147,6 @@ const mapStateToProps = (state) => {
     }
 }
 const mapDispatchToProps = (dispatch) => ({
-    logingIn: (login,pass) => dispatch(logingIn(login,pass))
+    logingIn: ({login,password}) => dispatch(logingIn({login,password}))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

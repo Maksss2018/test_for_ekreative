@@ -1,32 +1,39 @@
 import request from 'request'
 //import request from 'request-promise'
 //import {setCookie, getCookie} from '../utility/cookie'
-import {API} from './config.json'
+import {API,Users} from './config.json'
 import {
   REQ_SEND_ENTER, REQ_GET_ENTER, REQ_ERROR_ENTER
 } from '../constants/index.js'
 
-export const logingIn = (username="test", password="testtask") => {
+export const logingIn = (opt) => {
 //https://easyredmine.docs.apiary.io/#reference/issues/issues-collection/list-all-issues
-    const  doRequest =  (opt) => {
+    const  doRequest =  (opt,parameters) => {
         return new Promise( (resolve, reject) => {
-            request.get(API,{headers:{
-                "X-Redmine-API-Key" : "2fda745bb4cdd835fdf41ec1fab82a13ddc1a54c",
-                    "Content-Type": "application/json"
-            }},( res, err) => {
-                if (!err && res.statusCode == 200) {
-                    console.log("action rezult");
-                    resolve(res.body);
-                } else {
-                    console.log("action rezult "+JSON.stringify(err));
-                    reject(err);
-                }
-            })
+            console.log("login with :"+JSON.stringify(opt.login)+" "+opt.password);
+            if(Users[opt.login][opt.password]!==undefined){
+                request.get(`${API}/issues.json${parameters} `,{
+                    headers:{
+                        "X-Redmine-API-Key" : Users[opt.login][opt.password],
+                        "Content-Type": "application/json"
+                    }},( res, err) => {
+                    if (!err && res.statusCode == 200) {
+                        console.log("action rezult");
+                        resolve(res.body);
+                    } else {
+                        console.log("action rezult "+JSON.stringify(err));
+                        reject(err);
+                    }
+                })
+            }else{
+                reject("Unknown User! please sign-in first")
+            }
         });
     }
 
     return async (dispatch) => {
-        let options = {
+        let parameters = ["?sort=true","offset=0","limit=25","page=1"].join("&"),
+            options = {
             url:"https://redmine.ekreative.com",// `${API}`,
             method: 'POST',
             multipart: {
@@ -34,13 +41,13 @@ export const logingIn = (username="test", password="testtask") => {
                 data: [
                 {
                     'content-type': 'application/json',
-                    body:{ "username" : username,
-                        "password" : password}
+                    body:{ "username" : opt.login,
+                        "password" : opt.password}
                 }
             ]
         }
     };
-        doRequest({ username,password});
+        doRequest(opt,parameters);
 
     }
 };
