@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getByID,getListOfProjects} from '../../actions'
 import cookie from 'react-cookies'
+import { ListGroup, ListGroupItem, Badge } from 'reactstrap';
 import {dbPromise, idbKeyval} from '../../utils/index.js'
 let keysList = async()=>{
     let dt = await idbKeyval.keys();
@@ -47,18 +48,30 @@ class Main extends React.Component {
             kl,
             ListOfProjects = projects!==null?projects.map((project,ind)=>{
                 return(
-                   <li key={` projects-${ind}`}>
-                       {JSON.stringify(project)}
-                   </li>
+                    <ListGroupItem
+                        className={`bg-${project.status!==1?"green":"white"} text-${project.status!==1?"danger":"body"} justify-content-between`}>
+                        {project.name}  <Badge className={"bg-warning"} pill>id: {project.id}</Badge>
+                        <br/>
+                        <span>
+                            {project.description}
+                        </span>
+                        <ListGroup>
+                            {
+                                project["custom_fields"].map((li,ind)=>{
+                                    return(<ListGroupItem className="justify-content-between">
+                                        {li.name} : {li.value}
+                                    </ListGroupItem>)
+                                })
+                            }
+                        </ListGroup>
+                    </ListGroupItem>
                 )
             }):" Loading... ";
         console.log(" GET_PROJECTS_LIST __ render"+JSON.stringify(this.props.projects));
         return (
-            <ul>
-                <li>
-                    {ListOfProjects}
-                </li>
-            </ul>
+            <ListGroup>
+                {ListOfProjects}
+            </ListGroup>
         )
     }
 }
