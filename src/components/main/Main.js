@@ -1,21 +1,32 @@
 import React from 'react'
-// import ButtonComponent from '../button/buttonComponent'
-// import {setCookie, getCookie} from '../../api/cookie'
-//import Header from '../header/Header'
 import {connect} from 'react-redux'
-import {} from '../../actions'
-import ListView from '../listview/Listview'
+import {getByID,getListOfProjects} from '../../actions'
 import cookie from 'react-cookies'
+import {dbPromise, idbKeyval} from '../../utils/index.js'
+let keysList = async()=>{
+    let dt = await idbKeyval.keys();
+    return (dt)
+}
+
 class Main extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            width:null
+            projects:null|| this.props.projects
         };
     }
     componentDidMount () {
         if (cookie.load("password")&&cookie.load("username")) {
-            console.log("  cookie.load(\"password\") "+cookie.load("password"));
+            let {projects}=this.props;
+            this.props.getListOfProjects();
+            this.setState({projects});
+           /* keysList().then((res)=>{
+                console.log(" res "+JSON.stringify(res));*/
+                /*kl!==undefined?kl.map((k)=>{this.props.getByID(k,projects);
+                    return k
+                }):null;
+            });*/
+
         } else {
             this.props.history.push('/')
         }
@@ -25,21 +36,28 @@ class Main extends React.Component {
 
 
     componentDidUpdate (prevProps, prevState, snapshot) {
-  /*      if (!this.props.auth) {  }
-*/
+      if ( prevProps.projects!==this.props.projects) {
+          let {projects}=this.props;
+          console.log("let {projects}"+JSON.stringify(projects));
+       this.setState({projects});
+      }
     }
     render () {
-        let {data}=this.props.auth ,
-            ListOfProjects =data.map((project,ind)=>{
+        let {projects} = this.state/*,
+            kl,
+            ListOfProjects = projects!==null?projects.map((project,ind)=>{
                 return(
                    <li key={` projects-${ind}`}>
                        {JSON.stringify(project)}
                    </li>
                 )
-            });
+            }):" Loading... "*/;
+        console.log(" GET_PROJECTS_LIST __ render"+JSON.stringify(this.props.projects));
         return (
             <ul>
-                {ListOfProjects}
+                <li>
+                    {JSON.stringify( projects)}
+                </li>
             </ul>
         )
     }
@@ -47,10 +65,13 @@ class Main extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        auth: Object.assign({},state.auth)
+        auth: Object.assign({},state.auth),
+        projects: Object.assign({},state.projects)
     }
-}
+};
 const mapDispatchToProps = (dispatch) => ({
-  //  listViewData: () => dispatch(listViewData())
-})
-export default connect(mapStateToProps, mapDispatchToProps)(Main)
+    getListOfProjects: ()=>dispatch(getListOfProjects())
+    //getByID : (i,crnt)=>dispatch(getByID(i,crnt))
+    //  listViewData: () => dispatch(listViewData())
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
