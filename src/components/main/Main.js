@@ -43,7 +43,7 @@ class Main extends React.Component {
       }
     }
     render () {
-        let {projects} = this.state/*,
+        let {projects} = this.state,
             kl,
             ListOfProjects = projects!==null?projects.map((project,ind)=>{
                 return(
@@ -51,12 +51,12 @@ class Main extends React.Component {
                        {JSON.stringify(project)}
                    </li>
                 )
-            }):" Loading... "*/;
+            }):" Loading... ";
         console.log(" GET_PROJECTS_LIST __ render"+JSON.stringify(this.props.projects));
         return (
             <ul>
                 <li>
-                    {JSON.stringify( projects)}
+                    {ListOfProjects}
                 </li>
             </ul>
         )
@@ -66,7 +66,7 @@ class Main extends React.Component {
 const mapStateToProps = (state) => {
     return {
         auth: Object.assign({},state.auth),
-        projects: Object.assign({},state.projects)
+        projects: Object.assign([],state.projects)
     }
 };
 const mapDispatchToProps = (dispatch) => ({
