@@ -80,11 +80,8 @@ export const getListOfProjectsFromDB = async () =>{
             },
             {name,description,id,identifier,status,created_on,updated_on} = get(prt),
             prj  = {name,description,id,identifier,status,created_on,updated_on};
-        console.log("ACTION GET_PROJECTS_LIST "+JSON.stringify(get(prt)));
         return prj
     });
-    console.log("ACTION GET_PROJECTS_LIST "+JSON.stringify(await idbKeyval.get(1)));
-    console.log("ACTION GET_PROJECTS_LIST "+JSON.stringify(result));
     return kList
 };
 
@@ -117,5 +114,37 @@ export const getListOfProjects = () => {
          }
      //};
 
+    }
+};
+export const getListOfProjectIssues = (prjID,cookiesPassLgn) => {
+
+///issues.xml?project_id=2
+    return async (dispatch) => {
+        let rtg = await doRequest(cookiesPassLgn,
+                [`?project_id=${prjID}`],
+                "issues").then((res)=>{
+                return (JSON.parse(res).issues.map((id)=>id));
+            });
+
+        //console.log(" res.issues "+JSON.stringify(rtg));
+
+        dispatch({
+            type: GET_ISSUES_ALL,
+            payload:rtg
+        });
+
+
+        /* try{
+            let list =  await idbKeyval.keys().then((res)=>{
+                return (res);
+            });
+            dispatch({
+                type: GET_PROJECTS_LIST,
+                payload:list
+            });
+        }catch (e) {
+            console.log(" ERROR!!!! in reducer ");
+        }
+        */
     }
 };
