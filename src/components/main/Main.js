@@ -4,6 +4,7 @@ import {getByID,getListOfProjects,getListOfProjectIssues} from '../../actions'
 import cookie from 'react-cookies'
 import {ListGroup, ListGroupItem, Badge, Row, Col} from 'reactstrap';
 import {dbPromise, idbKeyval} from '../../utils/index.js'
+
 let keysList = async()=>{
     let dt = await idbKeyval.keys();
     return (dt)
@@ -81,23 +82,54 @@ class Main extends React.Component {
                     "custom_fields":[{"id":4,"name":"Fixed Version","value":""}],
                     "created_on":"2017-07-04T08:08:08Z","updated_on":"2017-07-05T22:03:47Z"};
              */
-             let statusBg;
+                const started = new Date(issue["created_on"]),
+                 updated = new Date(issue["updated_on"]),
+                    startedFull =`${started}`,
+                    updatedFull =`${updated}`;
+                let statusBg;
              switch(issue["status"].name){
                  case "New":
                      statusBg = "success";
                  break;
+                 case "Testing":
+                     statusBg = "dark";
+                     break;
+                 case "On Hold":
+                     statusBg = "warning";
+                     break;
+                 case "In Progress":
+                     statusBg = "primary";
+                     break;
                  default:
                      statusBg = "secondary";
              }
+             let  created =issue["created_on"].split("-");
                 return (<ListGroupItem key={`issue-${ind}`}>
-                    <Badge className={`bg-${statusBg}`} >
-                        {issue["status"].name} {issue["tracker"].name} : {` "${issue["subject"]}"`}
-                    </Badge>
-                    <br/>
-                    name:  {issue["author"].name}
-                    <br/>
-                    priority:  {issue["priority"].name}
-                    <br/>
+
+                    <Row>
+                        <Col>
+                            <ListGroupItem >
+                                <ListGroup >
+                                    created :   {`${startedFull}`.split(" ").slice(0,5).join(" ")} <br/>
+                                    last updated :{`${updatedFull}`.split(" ").slice(0,5).join(" ")}
+                                </ListGroup>
+                                <ListGroup >
+
+                                    name:  {issue["author"].name}
+
+                                </ListGroup>
+                                <ListGroup >
+                                    priority:  {issue["priority"].name}
+                                </ListGroup>
+                            </ListGroupItem>
+                        </Col>
+                        <Col>
+                            <Badge color={`${statusBg}`} >
+                                {issue["status"].name} {issue["tracker"].name} : {` "${issue["subject"]}"`}
+                            </Badge>
+
+                        </Col>
+                    </Row>
                     </ListGroupItem>)
                 }):"no issues ",
             ListOfProjects = projects!==null?projects.map((project,ind)=>{
