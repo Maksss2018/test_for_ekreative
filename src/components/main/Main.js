@@ -121,7 +121,7 @@ class Main extends React.Component {
                      done =` at the finish line `;
                      break;
                      default: done = <span className={"text-body"}>
-                          steel waiting for the weather from the sea
+                          still waiting for the weather from the sea
                      </span>;
 
              }
@@ -153,6 +153,7 @@ class Main extends React.Component {
                                 : {`"${issue["subject"].length>=50?issue["subject"].slice(0,50)+"...":issue["subject"]}"`}
                             </Badge><br/>
                             <Progress
+                                animated
                                 className={"mb-4"}
                                 color={`${statusBg}`}
                             value={Number(issue["done_ratio"])}>{done}</Progress>
