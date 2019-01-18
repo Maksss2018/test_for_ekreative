@@ -107,11 +107,11 @@ class Main extends React.Component {
                 return (<ListGroupItem key={`issue-${ind}`}>
 
                     <Row>
-                        <Col>
+                        <Col xs={12} md={4}>
                             <ListGroupItem >
                                 <ListGroup >
-                                    created :   {`${startedFull}`.split(" ").slice(0,5).join(" ")} <br/>
-                                    last updated :{`${updatedFull}`.split(" ").slice(0,5).join(" ")}
+                                    created : <br/>   {`${startedFull}`.split(" ").slice(0,5).join(" ")}
+                                    last updated : <br/>{`${updatedFull}`.split(" ").slice(0,5).join(" ")}
                                 </ListGroup>
                                 <ListGroup >
 
@@ -123,9 +123,11 @@ class Main extends React.Component {
                                 </ListGroup>
                             </ListGroupItem>
                         </Col>
-                        <Col>
-                            <Badge color={`${statusBg}`} >
-                                {issue["status"].name} {issue["tracker"].name} : {` "${issue["subject"]}"`}
+                        <Col xs={12} md={8}>
+                            <Badge
+                                color={`${statusBg}`} >
+                                {issue["status"].name} {issue["tracker"].name}
+                                : {`"${issue["subject"].length>=50?issue["subject"].slice(0,50)+"...":issue["subject"]}"`}
                             </Badge>
 
                         </Col>
@@ -138,9 +140,11 @@ class Main extends React.Component {
                         onClick={this.handelClickPrj}
                         id={`project-id-${project.id}`}
                         key={`project-list-items-${ind}`}
+
                         className={`bg-${project.status!==1?"green":"white"} text-${project.status!==1?"danger":"body"} justify-content-between`}>
                         {project.name}
-                        <Badge className={"bg-warning"} pill>id: {project.id}</Badge>
+                        <Badge
+                            className={"bg-warning"} pill>id: {project.id}</Badge>
                         <br/>
                          <span>Description : </span><br/>
                         <span className={" bg-warning "}>
