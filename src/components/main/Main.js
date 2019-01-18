@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getByID,getListOfProjects,getListOfProjectIssues} from '../../actions'
 import cookie from 'react-cookies'
-import {ListGroup, ListGroupItem, Badge, Row, Col} from 'reactstrap';
+import {ListGroup, ListGroupItem, Progress, Badge, Row, Col} from 'reactstrap';
 import {dbPromise, idbKeyval} from '../../utils/index.js'
 
 let keysList = async()=>{
@@ -86,7 +86,7 @@ class Main extends React.Component {
                  updated = new Date(issue["updated_on"]),
                     startedFull =`${started}`,
                     updatedFull =`${updated}`;
-                let statusBg;
+                let statusBg, done;
              switch(issue["status"].name){
                  case "New":
                      statusBg = "success";
@@ -103,33 +103,62 @@ class Main extends React.Component {
                  default:
                      statusBg = "secondary";
              }
+
+             switch (true) {
+                 case issue["done_ratio"] >= 1&& issue["done_ratio"] <=25:
+                     done =` first quarter `;
+                     break;
+                 case issue["done_ratio"] >= 26&& issue["done_ratio"] <=50:
+                     done =` half of the way`;
+                     break;
+                 case issue["done_ratio"] >= 51&& issue["done_ratio"] <=75:
+                     done =` fourth  quarter`;
+                     break;
+                 case issue["done_ratio"] >= 76&& issue["done_ratio"] <= 99:
+                     done =` almost done`;
+                     break;
+                 case  issue["done_ratio"] === 100:
+                     done =` at the finish line `;
+                     break;
+                     default: done = <span className={"text-body"}>
+                          steel waiting for the weather from the sea
+                     </span>;
+
+             }
              let  created =issue["created_on"].split("-");
                 return (<ListGroupItem key={`issue-${ind}`}>
 
                     <Row>
                         <Col xs={12} md={4}>
-                            <ListGroupItem >
-                                <ListGroup >
-                                    created : <br/>   {`${startedFull}`.split(" ").slice(0,5).join(" ")}
-                                    last updated : <br/>{`${updatedFull}`.split(" ").slice(0,5).join(" ")}
-                                </ListGroup>
-                                <ListGroup >
-
+                            <ListGroup className={"border-all-none"} >
+                                <ListGroupItem className={" pl-0 py-1 border-all-none"} >
                                     name:  {issue["author"].name}
-
-                                </ListGroup>
-                                <ListGroup >
+                                </ListGroupItem>
+                                <ListGroupItem className={"pl-0 py-1 border-all-none"} >
                                     priority:  {issue["priority"].name}
-                                </ListGroup>
-                            </ListGroupItem>
+                                </ListGroupItem>
+                                <ListGroupItem  className={"pl-0 py-1 border-all-none"}>
+                                    created : <br/>   {`${startedFull}`.split(" ").slice(0,5).join(" ")}
+                                </ListGroupItem>
+                                <ListGroupItem className={"pl-0 py-1 border-all-none"} >
+                                    last updated : <br/>{`${updatedFull}`.split(" ").slice(0,5).join(" ")}
+                                </ListGroupItem>
+                            </ListGroup>
                         </Col>
                         <Col xs={12} md={8}>
                             <Badge
+                                className={"mb-2"}
                                 color={`${statusBg}`} >
                                 {issue["status"].name} {issue["tracker"].name}
                                 : {`"${issue["subject"].length>=50?issue["subject"].slice(0,50)+"...":issue["subject"]}"`}
-                            </Badge>
-
+                            </Badge><br/>
+                            <Progress
+                                className={"mb-4"}
+                                color={`${statusBg}`}
+                            value={Number(issue["done_ratio"])}>{done}</Progress>
+                            <span>
+                                {issue["description"]}
+                            </span>
                         </Col>
                     </Row>
                     </ListGroupItem>)

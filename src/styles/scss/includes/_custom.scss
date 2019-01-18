@@ -150,6 +150,28 @@ label {
 }
 }
 
+.border{
+  $border-width:1px;
+  &-all{
+    border: $border-width solid $border-color;
+    &-none{
+      border: 0px solid $border-color;
+    }
+  }
+  &-top{
+    border-top: $border-width solid $border-color;
+  }
+  &-bottom{
+    border-bottom: $border-width solid $border-color;
+  }
+  &-left{
+    border-left: $border-width solid $border-color;
+  }
+  &-right{
+    border-right: $border-width solid $border-color;
+  }
+}
+
 .dropdown-menu {
   font-size: $font-size-sm;
   @include border-radius($dropdown-border-radius);
