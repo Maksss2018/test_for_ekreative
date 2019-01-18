@@ -65,8 +65,39 @@ class Main extends React.Component {
     render () {
         let {projects,currentProject} = this.state,
             currentProjectIssuesList = currentProject!==null?currentProject.map((issue,ind)=>{
-                return (<ListGroupItem>
-                    { ind}
+             /*json struct
+             let obj =
+                {  "id":27008,
+                    "project":{"id":378,"name":"Test Project"},
+                    "tracker":{"id":4,"name":"Task"},
+                    "status":{"id":1,"name":"New"},
+                    "priority":{"id":2,"name":"Normal"},
+                    "author":{"id":261,"name":"Test User"},
+                    "parent":{"id":27002},
+                    "subject":"Subtask 3",
+                    "description":"",
+                    "start_date":"2017-07-04",
+                    "done_ratio":0,
+                    "custom_fields":[{"id":4,"name":"Fixed Version","value":""}],
+                    "created_on":"2017-07-04T08:08:08Z","updated_on":"2017-07-05T22:03:47Z"};
+             */
+             let statusBg;
+             switch(issue["status"].name){
+                 case "New":
+                     statusBg = "success";
+                 break;
+                 default:
+                     statusBg = "secondary";
+             }
+                return (<ListGroupItem key={`issue-${ind}`}>
+                    <Badge className={`bg-${statusBg}`} >
+                        {issue["status"].name} {issue["tracker"].name} : {` "${issue["subject"]}"`}
+                    </Badge>
+                    <br/>
+                    name:  {issue["author"].name}
+                    <br/>
+                    priority:  {issue["priority"].name}
+                    <br/>
                     </ListGroupItem>)
                 }):"no issues ",
             ListOfProjects = projects!==null?projects.map((project,ind)=>{
