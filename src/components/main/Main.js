@@ -4,6 +4,8 @@ import {getByID,getListOfProjects,getListOfProjectIssues} from '../../actions'
 import cookie from 'react-cookies'
 import {ListGroup, ListGroupItem, Progress, Badge, Row, Col} from 'reactstrap';
 import {dbPromise, idbKeyval} from '../../utils/index.js'
+import CommentsContainer from '../../components/commentsContainer/CommentsContainer'
+///root/Desktop/test_EKreative/src/components/commentsContainer/CommentsContainer.js
 
 let keysList = async()=>{
     let dt = await idbKeyval.keys();
@@ -146,20 +148,29 @@ class Main extends React.Component {
                             </ListGroup>
                         </Col>
                         <Col xs={12} md={8}>
-                            <Badge
-                                className={"mb-2"}
-                                color={`${statusBg}`} >
-                                {issue["status"].name} {issue["tracker"].name}
-                                : {`"${issue["subject"].length>=50?issue["subject"].slice(0,50)+"...":issue["subject"]}"`}
-                            </Badge><br/>
-                            <Progress
-                                animated
-                                className={"mb-4"}
-                                color={`${statusBg}`}
-                            value={Number(issue["done_ratio"])}>{done}</Progress>
-                            <span>
+                            <Row className={" h-100 "}>
+                                <Col xs={12}>
+                                    <Badge
+                                        className={"mb-2"}
+                                        color={`${statusBg}`} >
+                                        {issue["status"].name} {issue["tracker"].name}
+                                        : {`"${issue["subject"].length>=50?issue["subject"].slice(0,50)+"...":issue["subject"]}"`}
+                                    </Badge><br/>
+                                    <Progress
+                                        animated
+                                        className={"mb-4"}
+                                        color={`${statusBg}`}
+                                        value={Number(issue["done_ratio"])}>{done}</Progress>
+                                </Col>
+                                <Col  xs={12}>
+                                   <span>
                                 {issue["description"]}
-                            </span>
+                                    </span>
+                                </Col>
+                                <Col className={" mt-auto "} xs={12}>
+                                    <CommentsContainer/>
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
                     </ListGroupItem>)
