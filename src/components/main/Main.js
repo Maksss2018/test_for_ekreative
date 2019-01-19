@@ -17,7 +17,8 @@ class Main extends React.Component {
         super(props);
         this.state = {
             projects:null,
-            currentProject : null
+            currentProject : null,
+            currentProjectId:null
         };
         this.handelClickPrj = this.handelClickPrj.bind(this);
     }
@@ -54,7 +55,8 @@ class Main extends React.Component {
     }
     handelClickPrj (e){
         e.preventDefault();
-        let id = e.target.id,
+        let {currentProjectId} = this.state ,
+            id = e.target.id,
             getId = id.split("-"),
             trueId= Number(getId[Number(getId.length-1)]);
         this.props.getListOfProjectIssues(
@@ -63,32 +65,34 @@ class Main extends React.Component {
                 login:cookie.load("username"),
                 password:cookie.load("password")
             }
-        )
+        );
+        this.setState({currentProjectId:trueId});
     }
     render () {
-        let {projects,currentProject} = this.state,
+        let {projects,currentProject,currentProjectId} = this.state,
             currentProjectIssuesList = currentProject!==null?currentProject.map((issue,ind)=>{
-             /*json struct
-             let obj =
-                {  "id":27008,
-                    "project":{"id":378,"name":"Test Project"},
-                    "tracker":{"id":4,"name":"Task"},
-                    "status":{"id":1,"name":"New"},
-                    "priority":{"id":2,"name":"Normal"},
-                    "author":{"id":261,"name":"Test User"},
-                    "parent":{"id":27002},
-                    "subject":"Subtask 3",
-                    "description":"",
-                    "start_date":"2017-07-04",
-                    "done_ratio":0,
-                    "custom_fields":[{"id":4,"name":"Fixed Version","value":""}],
-                    "created_on":"2017-07-04T08:08:08Z","updated_on":"2017-07-05T22:03:47Z"};
-             */
+                /*json struct
+                let obj =
+                   {  "id":27008,
+                       "project":{"id":378,"name":"Test Project"},
+                       "tracker":{"id":4,"name":"Task"},
+                       "status":{"id":1,"name":"New"},
+                       "priority":{"id":2,"name":"Normal"},
+                       "author":{"id":261,"name":"Test User"},
+                       "parent":{"id":27002},
+                       "subject":"Subtask 3",
+                       "description":"",
+                       "start_date":"2017-07-04",
+                       "done_ratio":0,
+                       "custom_fields":[{"id":4,"name":"Fixed Version","value":""}],
+                       "created_on":"2017-07-04T08:08:08Z","updated_on":"2017-07-05T22:03:47Z"};
+                */
                 const started = new Date(issue["created_on"]),
                  updated = new Date(issue["updated_on"]),
                     startedFull =`${started}`,
                     updatedFull =`${updated}`;
-                let statusBg, done;
+                let {currentProjectId}=this.state,
+                statusBg, done;
              switch(issue["status"].name){
                  case "New":
                      statusBg = "success";
@@ -128,7 +132,7 @@ class Main extends React.Component {
 
              }
              let  created =issue["created_on"].split("-");
-                return (<ListGroupItem key={`issue-${ind}`}>
+                return (<ListGroupItem  key={`issue-${ind}`}>
 
                     <Row>
                         <Col xs={12} md={4}>
@@ -168,7 +172,7 @@ class Main extends React.Component {
                                     </span>
                                 </Col>
                                 <Col className={" mt-auto "} xs={12}>
-                                    <CommentsContainer/>
+                                    <CommentsContainer id={`issue-${currentProjectId}-${issue["id"]}`} />
                                 </Col>
                             </Row>
                         </Col>

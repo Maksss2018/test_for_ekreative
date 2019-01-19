@@ -11,7 +11,7 @@ import {
     GET_ISSUE_ALL_COMMENTS,SET_ISSUE_COMMENT_BY_ISSUES_ID,DELETE_ISSUE_COMMENT_BY_ISSUES_ID
     /*indexDB END*/
 } from '../constants/index.js'
-import {dbPromise, idbKeyval} from '../utils/index.js'
+import { idbKeyval} from '../utils/index.js'
 
 export const doRequest = (opt,parameters,requestFor) => {
     return new Promise( (resolve, reject) => {
@@ -29,6 +29,33 @@ export const doRequest = (opt,parameters,requestFor) => {
 
     });
 };
+
+export const getComments = (obj) => {
+    return async (dispatch) => {
+            let data = await idbKeyval.getComment(Number(`${obj.prjID}${obj.issueID}`))
+                .then((r)=>(r))
+                .catch((err)=>(null));
+        dispatch({
+            type: GET_ISSUE_ALL_COMMENTS,
+            payload:data
+        });
+    }
+}
+
+export const setComments = (obj) => {
+    return async (dispatch) => {
+        /* obj.value suposed to be  a  prevData.concat([Newdata]) in the form or here ?  */
+        let data = await idbKeyval.setComment(Number(`${obj.prjID}${obj.issueID}`),obj.value)
+            .then((r)=>(r))
+            .catch((err)=>(null));
+        dispatch({
+            type: SET_ISSUE_COMMENT_BY_ISSUES_ID,
+            payload:data
+        });
+    }
+}
+
+
 export const logingIn = (opt) => {
 //https://easyredmine.docs.apiary.io/#reference/issues/issues-collection/list-all-issues
 
@@ -132,19 +159,5 @@ export const getListOfProjectIssues = (prjID,cookiesPassLgn) => {
             type: GET_ISSUES_ALL,
             payload:rtg
         });
-
-
-        /* try{
-            let list =  await idbKeyval.keys().then((res)=>{
-                return (res);
-            });
-            dispatch({
-                type: GET_PROJECTS_LIST,
-                payload:list
-            });
-        }catch (e) {
-            console.log(" ERROR!!!! in reducer ");
-        }
-        */
     }
 };

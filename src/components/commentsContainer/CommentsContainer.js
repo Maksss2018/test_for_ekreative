@@ -1,7 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Row,Col, Collapse, CardBody, Card } from 'reactstrap';
+import {Row,Col, Collapse, CardBody, Card, ListGroup } from 'reactstrap';
+import CommentsItem from '../../components/commentsItem/CommentsItem'
 import CommentsForm from '../../components/forms/CommentsForm'
+import {getComments} from '../../actions/index'
 class CommentsContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -10,7 +12,9 @@ class CommentsContainer extends React.Component {
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
         this.toggle = this.toggle.bind(this);
-        this.state = { collapse: false, status: 'Closed' };
+        this.state = {
+            collapse: false,
+            status: 'Closed' };
     }
 
     onEntering() {
@@ -30,10 +34,34 @@ class CommentsContainer extends React.Component {
     }
 
     toggle() {
+        let {collapse} =this.state;
         this.setState({ collapse: !this.state.collapse });
+
+        if(collapse){
+            /* TODO:
+            * request DB if there somesing like this " commentsDB -> [prjctID][issueID]" return it else return error
+            * */
+        }
+    }
+
+    componentDidMount() {
+        let {id}= this.props,
+            idStrnToArray=id.split("-"),
+            dataKeys ={
+                prjID : idStrnToArray[1],
+                issueID : idStrnToArray[2]
+            }
+            this.props.getComments(dataKeys);
     }
 
     render() {
+        let {collapse} = this.state,
+            {id}= this.props,
+            idStrnToArray=id.split("-"),
+             dataKeys ={
+                 prjID : idStrnToArray[1],
+                 issueID : idStrnToArray[2]
+             };
         return (
             <Row>
                 <Col className={" bg-primary py-1 text-center "}  onClick={this.toggle} style={{ color: 'white' }} >
@@ -46,17 +74,11 @@ class CommentsContainer extends React.Component {
                     onExiting={this.onExiting}
                     onExited={this.onExited}
                 >
-                    <Card>
-                        <CardBody>
-                            Anim pariatur cliche reprehenderit,
-                            enim eiusmod high life accusamus terry richardson ad squid. Nihil
-                            anim keffiyeh helvetica, craft beer labore wes anderson cred
-                            nesciunt sapiente ea proident.
-                        </CardBody>
+                    <ListGroup>
+                        {collapse?<CommentsItem/>:""}
+                    </ListGroup>
 
-
-                    </Card>
-                    <CommentsForm/>
+                    <CommentsForm data={dataKeys} />
                 </Collapse>
             </Row>
         );
@@ -74,7 +96,7 @@ const mapStateToProps = (state) => {
     }
 };
 const mapDispatchToProps = (dispatch) => ({
-    //getListOfProjects: ()=>dispatch(getListOfProjects()),
+    getComments: (keys)=>dispatch(getComments(keys)),
     //getListOfProjectIssues :(id,cookies)=>dispatch(getListOfProjectIssues(id,cookies))
     //getByID : (i,crnt)=>dispatch(getByID(i,crnt))
     //  listViewData: () => dispatch(listViewData())
