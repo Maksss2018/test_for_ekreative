@@ -120,7 +120,7 @@ export const  getByID  = async (prt,projects) =>{
         console.log(" async "+JSON.stringify(data));
         dispatch({
             type: GET_PROJECTS_LIST,
-            payload:projects.concat(data)
+            payload:[...projects,...data]
         });
     }
 }

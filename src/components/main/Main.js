@@ -20,7 +20,9 @@ class Main extends React.Component {
             currentProject : null,
             currentProjectId:null
         };
+
         this.handelClickPrj = this.handelClickPrj.bind(this);
+        this.makeDateShortString = this.makeDateShortString.bind(null)
     }
     componentDidMount () {
         if (cookie.load("password")&&cookie.load("username")) {
@@ -68,6 +70,12 @@ class Main extends React.Component {
         );
         this.setState({currentProjectId:trueId});
     }
+     makeDateShortString (arg){
+    let target = `${arg}`.split(" ") ,
+    [a,b,c,d,f, ...other] = target;
+    console.log(`${a} ${b} ${c} ${d} ${f}`);
+    return `${a} ${b} ${c} ${d} ${f}`;
+    }
     render () {
         let {projects,currentProject,currentProjectId} = this.state,
             currentProjectIssuesList = currentProject!==null?currentProject.map((issue,ind)=>{
@@ -88,9 +96,7 @@ class Main extends React.Component {
                        "created_on":"2017-07-04T08:08:08Z","updated_on":"2017-07-05T22:03:47Z"};
                 */
                 const started = new Date(issue["created_on"]),
-                 updated = new Date(issue["updated_on"]),
-                    startedFull =`${started}`,
-                    updatedFull =`${updated}`;
+                 updated = new Date(issue["updated_on"]);
                 let {currentProjectId}=this.state,
                 statusBg, done;
              switch(issue["status"].name){
@@ -144,10 +150,10 @@ class Main extends React.Component {
                                     priority:  {issue["priority"].name}
                                 </ListGroupItem>
                                 <ListGroupItem  className={"pl-0 py-1 border-all-none"}>
-                                    created : <br/>   {`${startedFull}`.split(" ").slice(0,5).join(" ")}
+                                    created : <br/>   {this.makeDateShortString(started)}
                                 </ListGroupItem>
                                 <ListGroupItem className={"pl-0 py-1 border-all-none"} >
-                                    last updated : <br/>{`${updatedFull}`.split(" ").slice(0,5).join(" ")}
+                                    last updated : <br/> {this.makeDateShortString(updated)}
                                 </ListGroupItem>
                             </ListGroup>
                         </Col>
