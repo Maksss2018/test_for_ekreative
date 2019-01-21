@@ -8,7 +8,8 @@ class CommentsItem extends React.Component {
         super(props);
         this.state = {
             text: false,
-            issueId: null
+            issueId: null,
+            comments:null
         };
         this.onSending =this.onSending.bind(this);
         this.onTyping = this.onTyping.bind(this);
@@ -25,7 +26,7 @@ class CommentsItem extends React.Component {
         this.setState({ status: 'Opening...' });
     }
     render() {
-      //  let {issueId} = this.props;
+       let {text} = this.props;
         return ( <ListGroup className={" bg-transparent"}>
             <ListGroupItem
                 className={" border-all-none bg-transparent"}>
@@ -36,10 +37,7 @@ class CommentsItem extends React.Component {
                 className={" border-all-none bg-transparent"}>
                 <Card>
                     <CardBody>
-                        Anim pariatur cliche reprehenderit,
-                        enim eiusmod high life accusamus terry richardson ad squid. Nihil
-                        anim keffiyeh helvetica, craft beer labore wes anderson cred
-                        nesciunt sapiente ea proident.
+                        {text}
                     </CardBody>
                 </Card>
             </ListGroupItem>

@@ -35,19 +35,27 @@ export const getComments = (obj) => {
             let data = await idbKeyval.getComment(Number(`${obj.prjID}${obj.issueID}`))
                 .then((r)=>(r))
                 .catch((err)=>(null));
+        console.log(" text loaded: "+data);
         dispatch({
             type: GET_ISSUE_ALL_COMMENTS,
-            payload:data
+       //     payload:data
         });
+        return data
     }
 }
 
-export const setComments = (obj) => {
+export const setComment = (obj) => {
     return async (dispatch) => {
         /* obj.value suposed to be  a  prevData.concat([Newdata]) in the form or here ?  */
         let data = await idbKeyval.setComment(Number(`${obj.prjID}${obj.issueID}`),obj.value)
-            .then((r)=>(r))
-            .catch((err)=>(null));
+            .then((r)=>{
+                console.log(" text Succes:");
+
+            })
+            .catch((err)=>{
+                console.log(" text ERRor:");
+
+            });
         dispatch({
             type: SET_ISSUE_COMMENT_BY_ISSUES_ID,
             payload:data

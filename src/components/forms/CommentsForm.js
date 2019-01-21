@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import {setComment} from '../../actions'
+
 
 
 class CommentsForm extends React.Component {
@@ -9,7 +11,7 @@ class CommentsForm extends React.Component {
         this.onSending =this.onSending.bind(this);
         this.onTyping = this.onTyping.bind(this);
         this.state = {
-            text: false,
+            text: null,
             issueId: null
         };
     }
@@ -21,19 +23,24 @@ class CommentsForm extends React.Component {
     }
     onSending(e) {
         e.preventDefault();
-        this.setState({ status: 'Opening...' });
+        let {data,prevIssues} = this.props,
+            { text } = this.state;//prjID : issueID
+
+        this.props.setComment({value:[text,...prevIssues], ...data});
+        this.props.publishComment;
     }
     render() {
-        let {issueId} = this.props;
+
         return (  <Form onSubmit={this.onSending} >
             <FormGroup>
-                <Label for="exampleText">Text Area</Label>
-                <Input onChange={this.onTyping}
+                <Input
+                  className={" text-body "}
+                    onChange={this.onTyping}
                        type="textarea"
                        name="text"
-                       id={`Text-`} />
+                       id={`text-`} />
             </FormGroup>
-            <Button>Submit</Button>
+            <Button> Publish </Button>
         </Form>);
     }
 
@@ -49,7 +56,7 @@ const mapStateToProps = (state) => {
     }
 };
 const mapDispatchToProps = (dispatch) => ({
-    //getListOfProjects: ()=>dispatch(getListOfProjects()),
+    setComment: (obj)=>dispatch(setComment(obj)), //obj.prjID / obj.issueID / obj.value
     //getListOfProjectIssues :(id,cookies)=>dispatch(getListOfProjectIssues(id,cookies))
     //getByID : (i,crnt)=>dispatch(getByID(i,crnt))
     //  listViewData: () => dispatch(listViewData())

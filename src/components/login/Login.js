@@ -82,7 +82,6 @@ class Login extends React.Component {
                 cookie.save('password', password.value);
                 cookie.save('username', login.value);
                 this.props.history.push('/logged');
-                console.log(" this.props.history "+JSON.stringify(this.props.history));
             }
         }
     }
@@ -92,7 +91,6 @@ class Login extends React.Component {
     render () {
         let {login,password, auth,globalError} = this.state,
             {error,loading}=auth;
-        console.log(error+" "+loading);
         return (<Col id={'loginForm'} className={` h-100 `} >
             <Row className={` h-100 d-flex align-items-center `} >
                 <Col/>
