@@ -1,16 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getByID,getListOfProjects,getListOfProjectIssues} from '../../actions'
+import {getListOfProjects,getListOfProjectIssues} from '../../actions'
 import cookie from 'react-cookies'
 import {ListGroup, ListGroupItem, Progress, Badge, Row, Col} from 'reactstrap';
-import {dbPromise, idbKeyval} from '../../utils/index.js'
+import {idbKeyval} from '../../utils/index.js'
 import CommentsContainer from '../../components/commentsContainer/CommentsContainer'
-///root/Desktop/test_EKreative/src/components/commentsContainer/CommentsContainer.js
 
-let keysList = async()=>{
-    let dt = await idbKeyval.keys();
-    return (dt)
-}
 
 class Main extends React.Component {
     constructor (props) {
@@ -30,13 +25,6 @@ class Main extends React.Component {
             this.props.getListOfProjects();
             this.setState({projects});
 
-            /* keysList().then((res)=>{
-                console.log(" res "+JSON.stringify(res));*/
-                /*kl!==undefined?kl.map((k)=>{this.props.getByID(k,projects);
-                    return k
-                }):null;
-            });*/
-
         } else {
             this.props.history.push('/')
         }
@@ -48,7 +36,6 @@ class Main extends React.Component {
     componentDidUpdate (prevProps, prevState, snapshot) {
         if ( prevProps.projects!==this.props.projects) {
             let {projects}=this.props;
-            console.log("let {projects}"+JSON.stringify(projects));
             this.setState({projects});
         }
         if(this.state.currentProject!==this.props.projectsIssues  ){
@@ -57,8 +44,7 @@ class Main extends React.Component {
     }
     handelClickPrj (e){
         e.preventDefault();
-        let {currentProjectId} = this.state ,
-            id = e.target.id,
+        let id = e.target.id,
             getId = id.split("-"),
             trueId= Number(getId[Number(getId.length-1)]);
         this.props.getListOfProjectIssues(
@@ -73,28 +59,11 @@ class Main extends React.Component {
      makeDateShortString (arg){
     let target = `${arg}`.split(" ") ,
     [a,b,c,d,f, ...other] = target;
-    console.log(`${a} ${b} ${c} ${d} ${f}`);
     return `${a} ${b} ${c} ${d} ${f}`;
     }
     render () {
         let {projects,currentProject,currentProjectId} = this.state,
             currentProjectIssuesList = currentProject!==null?currentProject.map((issue,ind)=>{
-                /*json struct
-                let obj =
-                   {  "id":27008,
-                       "project":{"id":378,"name":"Test Project"},
-                       "tracker":{"id":4,"name":"Task"},
-                       "status":{"id":1,"name":"New"},
-                       "priority":{"id":2,"name":"Normal"},
-                       "author":{"id":261,"name":"Test User"},
-                       "parent":{"id":27002},
-                       "subject":"Subtask 3",
-                       "description":"",
-                       "start_date":"2017-07-04",
-                       "done_ratio":0,
-                       "custom_fields":[{"id":4,"name":"Fixed Version","value":""}],
-                       "created_on":"2017-07-04T08:08:08Z","updated_on":"2017-07-05T22:03:47Z"};
-                */
                 const started = new Date(issue["created_on"]),
                  updated = new Date(issue["updated_on"]);
                 let {currentProjectId}=this.state,
@@ -137,7 +106,7 @@ class Main extends React.Component {
                      </span>;
 
              }
-             let  created =issue["created_on"].split("-");
+
                 return (<ListGroupItem  key={`issue-${ind}`}>
 
                     <Row>

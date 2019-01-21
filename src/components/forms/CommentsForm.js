@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Input } from 'reactstrap';
 import {setComment} from '../../actions'
 
 
@@ -8,6 +8,7 @@ import {setComment} from '../../actions'
 class CommentsForm extends React.Component {
     constructor(props) {
         super(props);
+        this.handelReloadComments = this.handelReloadComments.bind(this);
         this.onSending =this.onSending.bind(this);
         this.onTyping = this.onTyping.bind(this);
         this.state = {
@@ -24,9 +25,11 @@ class CommentsForm extends React.Component {
     onSending(e) {
         e.preventDefault();
         let {data,prevIssues} = this.props,
-            { text } = this.state;//prjID : issueID
-
-        this.props.setComment({value:[text,...prevIssues], ...data});
+            { text } = this.state;
+        this.props.setComment({value: prevIssues!==null?[text,...prevIssues]:[text], ...data});
+        this.handelReloadComments;
+    }
+    handelReloadComments(){
         this.props.publishComment;
     }
     render() {

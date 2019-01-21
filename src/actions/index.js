@@ -35,7 +35,7 @@ export const getComments = (obj) => {
             let data = await idbKeyval.getComment(Number(`${obj.prjID}${obj.issueID}`))
                 .then((r)=>(r))
                 .catch((err)=>(null));
-        console.log(" text loaded: "+data);
+        (" text loaded: "+data);
         dispatch({
             type: GET_ISSUE_ALL_COMMENTS,
        //     payload:data
@@ -49,11 +49,11 @@ export const setComment = (obj) => {
         /* obj.value suposed to be  a  prevData.concat([Newdata]) in the form or here ?  */
         let data = await idbKeyval.setComment(Number(`${obj.prjID}${obj.issueID}`),obj.value)
             .then((r)=>{
-                console.log(" text Succes:");
+                (" text Succes:");
 
             })
             .catch((err)=>{
-                console.log(" text ERRor:");
+                (" text ERRor:");
 
             });
         dispatch({
@@ -91,7 +91,7 @@ export const logingIn = (opt) => {
                     payload: {loading: false, error: false, auth: true}
                 });
             }catch(e){
-                console.log("ERROR!!!!!!");
+                ("ERROR!!!!!!");
                 dispatch({
                     type: REQ_ERROR_ENTER,
                     payload: {loading: false, error: true, auth: false}
@@ -122,10 +122,10 @@ export const getListOfProjectsFromDB = async () =>{
 
 export const  getByID  = async (prt,projects) =>{
     let data = await idbKeyval.get(prt);
-    console.log(" async "+JSON.stringify(data));
+    (" async "+JSON.stringify(data));
     return  (dispatch) => {
 
-        console.log(" async "+JSON.stringify(data));
+        (" async "+JSON.stringify(data));
         dispatch({
             type: GET_PROJECTS_LIST,
             payload:[...projects,...data]
@@ -145,7 +145,7 @@ export const getListOfProjects = () => {
                  payload:list
              });
          }catch (e) {
-             console.log(" ERROR!!!! in reducer ");
+             (" ERROR!!!! in reducer ");
          }
      //};
 
@@ -161,7 +161,7 @@ export const getListOfProjectIssues = (prjID,cookiesPassLgn) => {
                 return (JSON.parse(res).issues.map((id)=>id));
             });
 
-        //console.log(" res.issues "+JSON.stringify(rtg));
+        //(" res.issues "+JSON.stringify(rtg));
 
         dispatch({
             type: GET_ISSUES_ALL,

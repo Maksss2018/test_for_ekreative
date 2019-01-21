@@ -1,13 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {FormFeedback, Row, Col, Form,
+import { Row, Col, Form,
     FormGroup, Label, Input, Button } from 'reactstrap'
 import {logingIn} from '../../actions'
 import cookie from 'react-cookies'
-import h5 from "eslint-plugin-jsx-a11y/src/util/implicitRoles/h5";
 class Login extends React.Component {
     constructor (props) {
-        super(props)
+        super(props);
         this.state = {
             globalError:false,
             auth:{loading: false, error: false, auth: false},
@@ -30,21 +29,6 @@ class Login extends React.Component {
         // if (!localStorage.getItem('Token')) { this.props.history.push('/') }
     }
 
-    // // onSignOut () {
-    // //   request
-    // //     .post('http://172.19.4.109:8000/auth/logout/')
-    // //     // .send({'username': this.state.email, 'password': this.state.password}) // sends a JSON post body
-    // //     .set('Authorization', 'Token ' + getCookie('Token'))
-    // //     .end((err, res) => {
-    // //       if (err) console.log(err)
-    // //       else {
-    // //         console.log(res.body.key)
-    // //         setCookie('Token', '', true)
-    // //         // localStorage.setItem('Token', res.body.key)
-    // //         this.props.history.push('/')
-    // //       }
-    // //     })
-    // // }
       handelInputOnChange(e){
          e.preventDefault();
          let trg = e.target, name = trg.name, value = trg.value,
@@ -163,8 +147,8 @@ const mapStateToProps = (state) => {
     return {
         auth: Object.assign({}, state.auth)
     }
-}
+};
 const mapDispatchToProps = (dispatch) => ({
     logingIn: ({login,password}) => dispatch(logingIn({login,password}))
-})
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

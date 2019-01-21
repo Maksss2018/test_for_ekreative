@@ -7,7 +7,6 @@ import {
 export default  (state = null /* = getCookie('Token')*/, action) => {
     switch (action.type) {
         case GET_PROJECTS_LIST:
-            console.log(" GET_PROJECTS_LIST __ DONE"+typeof(action.payload));
             return (action.payload);
         default:
             return state;
